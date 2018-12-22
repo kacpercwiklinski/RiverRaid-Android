@@ -33,6 +33,9 @@ namespace RiverRaider.Class.userInterface {
             theBatch.Draw(uiBackgroundTexture, new Vector2(0, Game1.HEIGHT - uiBackgroundTexture.Height), Color.White);
             drawFuelPointer(theBatch);
             theBatch.Draw(fuelBarTexture, fuelBarPosition, Color.White);
+            
+            theBatch.Draw(Game1.textureManager.left_arrow_btn, new Rectangle((int)Game1.WIDTH / 8, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width, Game1.textureManager.left_arrow_btn.Height), null, Color.White, 0.0f, new Vector2(0.1f, 0.1f), SpriteEffects.None, 0.0f);
+            theBatch.Draw(Game1.textureManager.right_arrow_btn, new Vector2((Game1.WIDTH / 8) * 2, Game1.HEIGHT / 8),Color.White);
         }
 
         private void drawFuelPointer(SpriteBatch theBatch) {

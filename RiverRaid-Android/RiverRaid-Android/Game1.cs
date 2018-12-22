@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using RiverRaider.Class;
 using RiverRaider.Class.Objects;
 using RiverRaider.Class.ScreenScripts;
@@ -15,6 +16,9 @@ namespace RiverRaid_Android {
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Rectangle dst;
+
+        RenderTarget2D renderTarget;
 
         public static TextureManager textureManager;
         public static AudioManager audioManager;
@@ -26,16 +30,21 @@ namespace RiverRaid_Android {
         public static GameScreen mGameScreen;
 
 
-        public static int WIDTH, HEIGHT;
+        public static int WIDTH = 1280, HEIGHT = 720;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false; // true
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-            graphics.SupportedOrientations = DisplayOrientation.Portrait;
+           // graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
+
+            TouchPanel.DisplayHeight = HEIGHT;
+            TouchPanel.DisplayWidth = WIDTH;
+            TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
+            TouchPanel.EnableMouseTouchPoint = true;
         }
 
         /// <summary>
@@ -46,11 +55,15 @@ namespace RiverRaid_Android {
         /// </summary>
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+            PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
+
+            renderTarget = new RenderTarget2D(graphics.GraphicsDevice, WIDTH, HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents); // RenderTargetUsage.PreserveContents
+
+            dst = calculateAspectRectangle();
 
             base.Initialize();
-
-            WIDTH = GraphicsDevice.Viewport.Width;
-            HEIGHT = GraphicsDevice.Viewport.Height;
         }
 
         /// <summary>
@@ -72,6 +85,14 @@ namespace RiverRaid_Android {
             mGameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
 
             mCurrentScreen = mControllerScreen;
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
+                renderTarget.Dispose();
+                renderTarget = null;
+            }
+            base.Dispose(disposing);
         }
 
         private void GameScreenEvent(object sender, EventArgs e) {
@@ -122,14 +143,44 @@ namespace RiverRaid_Android {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(tlo);
 
-            // TODO: Add your drawing code here
+            graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+
+            GraphicsDevice.Clear(tlo);
             spriteBatch.Begin();
             mCurrentScreen.Draw(spriteBatch);
             spriteBatch.End();
 
+            graphics.GraphicsDevice.SetRenderTarget(null);
+
+            GraphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, dst, Color.White);
+            spriteBatch.End();
+
             base.Draw(gameTime);
+        }
+
+        protected Rectangle calculateAspectRectangle() {
+            Rectangle dst = new Rectangle();
+
+            float outputAspect = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
+            float preferredAspect = WIDTH / (float)HEIGHT;
+
+            if (outputAspect <= preferredAspect) {
+                int presentHeight = (int)((Window.ClientBounds.Width / preferredAspect) + 0.5f);
+                int barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
+
+                dst = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
+            } else {
+                int presentWidth = (int)((Window.ClientBounds.Width * preferredAspect) + 0.5f);
+                int barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
+
+                dst = new Rectangle(barWidth, 0, presentWidth, Window.ClientBounds.Height);
+            }
+
+            return dst;
         }
     }
 }

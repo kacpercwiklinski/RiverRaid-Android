@@ -22,5 +22,9 @@ namespace RiverRaider.Class {
         public virtual void Draw(SpriteBatch spriteBatch) {
 
         }
+
+        public virtual void Draw(Texture2D renderTarget,Rectangle dst,Color color) {
+
+        }
     }
 }

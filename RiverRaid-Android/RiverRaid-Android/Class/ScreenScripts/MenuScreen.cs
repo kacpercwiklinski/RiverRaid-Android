@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using RiverRaid_Android;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace RiverRaider.Class {
     class MenuScreen : Screen {
@@ -43,10 +44,54 @@ namespace RiverRaider.Class {
 
         public override void Update(GameTime theTime) {
             var kstate = Keyboard.GetState();
+            var touchCol = TouchPanel.GetState();
 
             if (GamePad.GetState(PlayerOne).Buttons.B == ButtonState.Pressed || kstate.IsKeyDown(Keys.B) == true) {
                 ScreenEvent.Invoke(this, new EventArgs());
             }
+
+            while (TouchPanel.IsGestureAvailable) {
+                GestureSample gs = TouchPanel.ReadGesture();
+
+                if(gs.GestureType == GestureType.VerticalDrag) {
+                    if(gs.Delta.Y > 0) {
+                        changeActiveOption(-1, theTime);
+                    } else {
+                        changeActiveOption(1, theTime);
+                    }
+                }
+            }
+            
+            foreach (var touch in touchCol) {
+                if (touch.State == TouchLocationState.Pressed) {
+                    ScreenEvent.Invoke(this, new EventArgs());
+                }
+            }
+
+            /*
+            foreach (var touch in touchCol) {
+
+                if (touch.State != TouchLocationState.Released)
+                    continue;
+
+                TouchLocation prevLoc;
+
+                if (!touch.TryGetPreviousLocation(out prevLoc) || prevLoc.State != TouchLocationState.Moved)
+                    continue;
+
+                var delta = touch.Position - prevLoc.Position;
+
+                // Usually you don't want to do something if the user drags 1 pixel.
+                if (delta.LengthSquared() < 30f)
+                    continue;
+
+                if (delta.X < 0 || delta.Y < 0)
+                    Debug.WriteLine("Swipe w prawo");
+
+                if (delta.X > 0 || delta.Y > 0)
+                    Debug.WriteLine("Swipe w lewo");
+            }
+            */
 
             updateCounter(theTime);
 
