@@ -130,7 +130,7 @@ namespace RiverRaider.Class.MapScripts {
             removeHiddenBullets();
 
             // Move and remove objects below screen
-            mapObjects.ForEach((mapobject) => {
+            mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).ForEach((mapobject) => {
                 mapobject.updateObject(theTime);
                 if (mapobject.pos.Y > Game1.textureManager.fullTile.Height + mapobject.texture.Height) mapobject.onScreen = false;
                 mapobject.pos.Y += mapMovingSpeed * (float)theTime.ElapsedGameTime.TotalSeconds;
@@ -150,17 +150,17 @@ namespace RiverRaider.Class.MapScripts {
         }
 
         public void drawMap(SpriteBatch theBatch) {
-            tiles.ForEach((tile) => {
+            tiles.FindAll((tile) => tile.pos.Y > -Game1.textureManager.fullTile.Height -20).ForEach((tile)  => {
                 tile.drawTile(theBatch);
             });
 
-            mapObjects.ForEach((mapObject) => {
+            mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).ForEach((mapObject) => {
                 mapObject.draw(theBatch);
             });
         }
 
         private void removeHiddenBullets() {
-            Player.bullets = Player.bullets.FindAll((bullet) => bullet.pos.Y > -200);
+            Player.bullets = Player.bullets.FindAll((bullet) => bullet.pos.Y > -50);
         }
     }
 }

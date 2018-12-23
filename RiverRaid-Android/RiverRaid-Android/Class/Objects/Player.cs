@@ -78,14 +78,13 @@ namespace RiverRaider.Class.Objects {
         }
 
         private void handleMapObjectsCollisions() {
-            Map.mapObjects.ForEach((mapObject) => {
+            Map.mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).ForEach((mapObject) => {
                 if (mapObject.boundingBox.Intersects(this.boundingBox) && mapObject.isTriggerable == true) {
                     if (mapObject.label.Equals("Fuel")) {
                         fueling = true;
                     } else {
                         explode();
-                    } 
-                    
+                    }
                 }
             });
         }
@@ -94,20 +93,22 @@ namespace RiverRaider.Class.Objects {
             List<Tile> tempTiles = new List<Tile>();
 
             Tile currentTile = Map.tiles.Find((tile) => (pos.Y + texture.Height + 5) >= tile.pos.Y && pos.Y <= (tile.pos.Y + tile.texture.Height));
-            Tile nextTile = Map.tiles.Find((tile) => tile.pos.Y <= currentTile.pos.Y - tile.texture.Height + 10 && tile.pos.Y >= currentTile.pos.Y - tile.texture.Height - 10);
             
-            if (currentTile != null && nextTile != null) {
-                tempTiles.Add(currentTile);
-                tempTiles.Add(nextTile);
+            if (currentTile != null) {
+                Tile nextTile = Map.tiles.Find((tile) => tile.pos.Y <= currentTile.pos.Y - tile.texture.Height + 10 && tile.pos.Y >= currentTile.pos.Y - tile.texture.Height - 10);
 
-                tempTiles.ForEach((tempTile) => {
-                    if (tempTile.boundingBox.Intersects(boundingBox) && tempTile.tileType != TileType.FullTile) {
-                        bool collision = PerPixelCollisionManager.IntersectsPixel(boundingBox,colorData, tempTile.boundingBox,tempTile.colorData);
-                        if (collision) explode();
-                    }
-                });
+                if (nextTile != null) {
+                    tempTiles.Add(currentTile);
+                    tempTiles.Add(nextTile);
+
+                    tempTiles.ForEach((tempTile) => {
+                        if (tempTile.boundingBox.Intersects(boundingBox) && tempTile.tileType != TileType.FullTile) {
+                            bool collision = PerPixelCollisionManager.IntersectsPixel(boundingBox, colorData, tempTile.boundingBox, tempTile.colorData);
+                            if (collision) explode();
+                        }
+                    });
+                }
             }
-            
         }
 
         private void handleMovement(GameTime theTime) {

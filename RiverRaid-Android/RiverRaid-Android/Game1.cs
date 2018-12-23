@@ -39,6 +39,7 @@ namespace RiverRaid_Android {
             graphics.IsFullScreen = false; // true
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
            // graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
 
             TouchPanel.DisplayHeight = HEIGHT;
@@ -144,19 +145,19 @@ namespace RiverRaid_Android {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
 
-            graphics.GraphicsDevice.SetRenderTarget(renderTarget);
-
+            GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(tlo);
+
             spriteBatch.Begin();
             mCurrentScreen.Draw(spriteBatch);
             spriteBatch.End();
 
-            graphics.GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.SetRenderTarget(null);
 
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(tlo);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(renderTarget, dst, Color.White);
+            spriteBatch.Draw(renderTarget, dst,Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
