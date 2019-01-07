@@ -32,6 +32,9 @@ namespace RiverRaid_Android {
 
         public static int WIDTH = 1280, HEIGHT = 720;
 
+        
+
+
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
