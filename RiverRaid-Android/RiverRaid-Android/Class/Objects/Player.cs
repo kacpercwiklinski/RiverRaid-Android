@@ -127,7 +127,7 @@ namespace RiverRaider.Class.Objects {
                 {
                     foreach (var touch in touchCollection)
                     {
-                        if (target.Contains(touch.Position))
+                        if (target.Contains(touch.Position) && this.pos.X > Game1.WIDTH / 4 + 8 + this.texture.Width / 2)
                         {
                             this.texture = Game1.textureManager.player_left;
                             this.pos.X += -1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
@@ -148,7 +148,7 @@ namespace RiverRaider.Class.Objects {
                 {
                     foreach (var touch in touchCollection)
                     {
-                        if (target.Contains(touch.Position))
+                        if (target.Contains(touch.Position) && this.pos.X < Game1.WIDTH - Game1.WIDTH / 4 - 8 - this.texture.Width / 2)
                         {
                             this.texture = Game1.textureManager.player_right;
                             this.pos.X += 1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
@@ -181,9 +181,11 @@ namespace RiverRaider.Class.Objects {
                 return false;
             }
 
-            CheckLeftMoveTouch(new Rectangle((int)Game1.WIDTH / 8, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width, Game1.textureManager.left_arrow_btn.Height), touchCollection);
-            CheckRightMoveTouch(new Rectangle((Game1.WIDTH / 8) * 2, (int)Game1.HEIGHT / 8, Game1.textureManager.right_arrow_btn.Width, Game1.textureManager.right_arrow_btn.Height), touchCollection);
-            CheckShootTouch(new Rectangle(940, 0, 340, 720), touchCollection);
+            CheckLeftMoveTouch(new Rectangle((int)Game1.WIDTH / 8, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width*2, Game1.textureManager.left_arrow_btn.Height*2), touchCollection);
+            CheckRightMoveTouch(new Rectangle((int)(Game1.WIDTH / 8)*2, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width*2, Game1.textureManager.left_arrow_btn.Height*2), touchCollection);
+            //CheckShootTouch(new Rectangle(940, 0, 340, 720), touchCollection);
+
+            CheckShootTouch(new Rectangle(Game1.WIDTH/2 + Game1.WIDTH/4, 0, Game1.WIDTH/2, Game1.HEIGHT), touchCollection);
 
 
 
