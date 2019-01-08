@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RiverRaider.Class.MapScripts;
 using RiverRaider.Class.Tiles;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace RiverRaider.Class.Objects {
     class Player : GameObject {
@@ -20,6 +21,7 @@ namespace RiverRaider.Class.Objects {
         float fuelUsageRate;
         public static float fuel;
         bool fueling = false;
+        public TouchCollection touchCollection;
 
         public Player(string labels, Texture2D texture, Vector2 position) : base(labels, texture, position) {
             bullets = new List<Bullet>();
@@ -113,6 +115,82 @@ namespace RiverRaider.Class.Objects {
 
         private void handleMovement(GameTime theTime) {
             var kstate = Keyboard.GetState();
+
+
+            touchCollection = TouchPanel.GetState();
+
+
+
+            bool CheckLeftMoveTouch(Rectangle target, TouchCollection touchCollection)
+            {
+                if (touchCollection.Count > 0)
+                {
+                    foreach (var touch in touchCollection)
+                    {
+                        if (target.Contains(touch.Position) && this.pos.X > Game1.WIDTH / 4 + 8 + this.texture.Width / 2)
+                        {
+                            this.texture = Game1.textureManager.player_left;
+                            this.pos.X += -1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
+                            return true;
+                        }
+                        else
+                        {
+                            this.texture = Game1.textureManager.player;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            bool CheckRightMoveTouch(Rectangle target, TouchCollection touchCollection)
+            {
+                if (touchCollection.Count > 0)
+                {
+                    foreach (var touch in touchCollection)
+                    {
+                        if (target.Contains(touch.Position) && this.pos.X < Game1.WIDTH - Game1.WIDTH / 4 - 8 - this.texture.Width / 2)
+                        {
+                            this.texture = Game1.textureManager.player_right;
+                            this.pos.X += 1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
+                            return true;
+                        }
+                        else
+                        {
+                            this.texture = Game1.textureManager.player;
+                        }
+                    }
+                }
+                return false;
+            }
+
+
+            bool CheckShootTouch(Rectangle target, TouchCollection touchCollection)
+            {
+                if (touchCollection.Count > 0)
+                {
+                    foreach (var touch in touchCollection)
+                    {
+                        if (target.Contains(touch.Position) && touch.State ==  TouchLocationState.Pressed)
+                        {
+                            shoot();
+                            this.shootCooldown = 0.2f;
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            CheckLeftMoveTouch(new Rectangle((int)Game1.WIDTH / 8, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width*2, Game1.textureManager.left_arrow_btn.Height*2), touchCollection);
+            CheckRightMoveTouch(new Rectangle((int)(Game1.WIDTH / 8)*2, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width*2, Game1.textureManager.left_arrow_btn.Height*2), touchCollection);
+            //CheckShootTouch(new Rectangle(940, 0, 340, 720), touchCollection);
+
+            CheckShootTouch(new Rectangle(Game1.WIDTH/2 + Game1.WIDTH/4, 0, Game1.WIDTH/2, Game1.HEIGHT), touchCollection);
+
+
+
+
+
 
             if (kstate.IsKeyDown(Keys.A) && this.pos.X > Game1.WIDTH/4 + 8 + this.texture.Width/2) {
                 this.texture = Game1.textureManager.player_left;
