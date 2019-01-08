@@ -154,7 +154,7 @@ namespace RiverRaid_Android {
 
             GraphicsDevice.SetRenderTarget(null);
 
-            GraphicsDevice.Clear(tlo);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
             spriteBatch.Draw(renderTarget, dst,Color.White);
