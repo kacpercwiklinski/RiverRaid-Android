@@ -18,6 +18,9 @@ namespace RiverRaid_Android {
         SpriteBatch spriteBatch;
         Rectangle dst;
 
+        public static float scaleX;
+        public static float scaleY;
+
         RenderTarget2D renderTarget;
 
         public static TextureManager textureManager;
@@ -31,10 +34,7 @@ namespace RiverRaid_Android {
 
 
         public static int WIDTH = 1280, HEIGHT = 720;
-
         
-
-
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -45,8 +45,7 @@ namespace RiverRaid_Android {
             graphics.ApplyChanges();
            // graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
 
-            TouchPanel.DisplayHeight = HEIGHT;
-            TouchPanel.DisplayWidth = WIDTH;
+            
             TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
             TouchPanel.EnableMouseTouchPoint = true;
         }
@@ -62,10 +61,15 @@ namespace RiverRaid_Android {
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
-
             renderTarget = new RenderTarget2D(graphics.GraphicsDevice, WIDTH, HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents); // RenderTargetUsage.PreserveContents
 
             dst = calculateAspectRectangle();
+
+            scaleX = GraphicsDevice.Viewport.Width / WIDTH;
+            scaleY = GraphicsDevice.Viewport.Height / HEIGHT;
+
+            TouchPanel.DisplayHeight = HEIGHT;
+            TouchPanel.DisplayWidth = WIDTH;
 
             base.Initialize();
         }
@@ -157,9 +161,9 @@ namespace RiverRaid_Android {
 
             GraphicsDevice.SetRenderTarget(null);
 
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 1.0f, 0);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
             spriteBatch.Draw(renderTarget, dst,Color.White);
             spriteBatch.End();
 
@@ -167,7 +171,7 @@ namespace RiverRaid_Android {
         }
 
         protected Rectangle calculateAspectRectangle() {
-            Rectangle dst = new Rectangle();
+            Rectangle dst;
 
             float outputAspect = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
             float preferredAspect = WIDTH / (float)HEIGHT;
@@ -175,15 +179,14 @@ namespace RiverRaid_Android {
             if (outputAspect <= preferredAspect) {
                 int presentHeight = (int)((Window.ClientBounds.Width / preferredAspect) + 0.5f);
                 int barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
-
+ 
                 dst = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
             } else {
-                int presentWidth = (int)((Window.ClientBounds.Width * preferredAspect) + 0.5f);
+                int presentWidth = (int)((Window.ClientBounds.Height * preferredAspect) + 0.5f);
                 int barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
 
                 dst = new Rectangle(barWidth, 0, presentWidth, Window.ClientBounds.Height);
             }
-
             return dst;
         }
     }

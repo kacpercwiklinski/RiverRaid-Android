@@ -30,24 +30,15 @@ namespace RiverRaider.Class.MapScripts {
 
             currentTile = firstTile;
             generateMap(tilesNumber);
+
+            currentTile.generateEnemies();
         }
 
         private void generateMap(int tilesNumber) {
             Tile nextTile = new FullTile(new Vector2(Game1.WIDTH / 4, 0));
-            List<Vector2> randomPlaces;
 
             for (int i = 1; i <= tilesNumber; i++) {
                 if (currentTile.tileType == TileType.FullTile) {
-                    randomPlaces = currentTile.spawnPlaces;
-
-                    for (int x = 0; x < r.Next(1,currentTile.maxEnemies); x++) {
-                        if(randomPlaces.Count() > 0) {
-                            Vector2 randomPlace = randomPlaces.ElementAt(r.Next(0, randomPlaces.Count()));
-                            randomPlaces.Remove(randomPlace);
-                            currentTile.generateMapObject(randomPlace);
-                        }
-                    }
-
                     int random = r.Next(0, 2);
                     if (random == 0) {
                         nextTile = new UpShrinkedTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked.Height - 1));
@@ -56,16 +47,6 @@ namespace RiverRaider.Class.MapScripts {
                         nextTile = new UpShrinkedMidObstacleTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked_mid_obstacle.Height - 1));
                     }
                 } else if (currentTile.tileType == TileType.UpShrinked) {
-                    randomPlaces = currentTile.spawnPlaces;
-
-                    for (int x = 0; x < r.Next(1, currentTile.maxEnemies); x++) {
-                        if (randomPlaces.Count() > 0) {
-                            Vector2 randomPlace = randomPlaces.ElementAt(r.Next(0, randomPlaces.Count()));
-                            randomPlaces.Remove(randomPlace);
-                            currentTile.generateMapObject(randomPlace);
-                        }
-                    }
-
                     int random = r.Next(0, 2);
                     if (random == 0) {
                         nextTile = new DownShrinkedTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.downShrinked.Height - 1));
@@ -73,17 +54,6 @@ namespace RiverRaider.Class.MapScripts {
                         nextTile = new DownShrinkedMidObstacleTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.downShrinked_mid_obstacle.Height - 1));
                     }
                 } else if (currentTile.tileType == TileType.DownShrinked) {
-                    randomPlaces = currentTile.spawnPlaces;
-
-                    for (int x = 0; x < r.Next(1, currentTile.maxEnemies); x++) {
-                        if (randomPlaces.Count() > 0) {
-                            Vector2 randomPlace = randomPlaces.ElementAt(r.Next(0, randomPlaces.Count()));
-                            randomPlaces.Remove(randomPlace);
-                            currentTile.generateMapObject(randomPlace);
-                        }
-                    }
-
-
                     int random = r.Next(0, 3);
                     if (random == 0) {
                         nextTile = new UpShrinkedTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked.Height - 1));
@@ -94,24 +64,8 @@ namespace RiverRaider.Class.MapScripts {
                         nextTile = new UpShrinkedMidObstacleTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked_mid_obstacle.Height - 1));
                     }
                 } else if (currentTile.tileType == TileType.UpShrinked_mid_obstacle) {
-                    randomPlaces = currentTile.spawnPlaces;
-                    for (int x = 0; x < r.Next(1, currentTile.maxEnemies); x++) {
-                        if (randomPlaces.Count() > 0) {
-                            Vector2 randomPlace = randomPlaces.ElementAt(r.Next(0, randomPlaces.Count()));
-                            randomPlaces.Remove(randomPlace);
-                            currentTile.generateMapObject(randomPlace);
-                        }
-                    }
                     nextTile = new DownShrinkedTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.downShrinked.Height - 1));
                 } else if (currentTile.tileType == TileType.DownShrinked_mid_obstacle) {
-                    randomPlaces = currentTile.spawnPlaces;
-                    for (int x = 0; x < r.Next(1, currentTile.maxEnemies); x++) {
-                        if (randomPlaces.Count() > 0) {
-                            Vector2 randomPlace = randomPlaces.ElementAt(r.Next(0, randomPlaces.Count()));
-                            randomPlaces.Remove(randomPlace);
-                            currentTile.generateMapObject(randomPlace);
-                        }
-                    }
                     int random = r.Next(0, 2);
                     if (random == 0) {
                         nextTile = new FullTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.fullTile.Height - 1));
@@ -126,13 +80,16 @@ namespace RiverRaider.Class.MapScripts {
 
         public void updateMap(GameTime theTime) {
 
+            // Generate currentTiles enemies
+            tiles.FindAll((tile) => tile.pos.Y >= -tile.texture.Height - 30).ForEach((tile) => tile.generateEnemies());
+
             // Remove bullets above the screen
             removeHiddenBullets();
 
             // Move and remove objects below screen
-            mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).ForEach((mapobject) => {
+            mapObjects.ForEach((mapobject) => {
                 mapobject.updateObject(theTime);
-                if (mapobject.pos.Y > Game1.textureManager.fullTile.Height + mapobject.texture.Height) mapobject.onScreen = false;
+                if (mapobject.pos.Y >= Game1.textureManager.fullTile.Height + mapobject.texture.Height) mapobject.onScreen = false;
                 mapobject.pos.Y += mapMovingSpeed * (float)theTime.ElapsedGameTime.TotalSeconds;
             });
 
@@ -145,7 +102,10 @@ namespace RiverRaider.Class.MapScripts {
                 tile.updateBoundingBox();
             });
 
-            mapObjects = mapObjects.FindAll((mapObject) => mapObject.onScreen || mapObject.isTriggerable);
+
+
+            mapObjects = mapObjects.FindAll((mapObject) => mapObject.onScreen);//.FindAll((mapObject) => mapObject.isTriggerable);
+
             tiles = tiles.FindAll((tile) => tile.onScreen);
         }
 

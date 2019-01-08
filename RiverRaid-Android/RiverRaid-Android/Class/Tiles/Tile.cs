@@ -22,6 +22,7 @@ namespace RiverRaider.Class.Tiles {
         public TileType tileType;
         public Color[] colorData;
         public List<Vector2> spawnPlaces;
+        public bool generatedEnemies = false;
 
         public Tile(Texture2D texture,Vector2 position, TileType tileType) {
             pos = position;
@@ -52,6 +53,20 @@ namespace RiverRaider.Class.Tiles {
                     Map.mapObjects.Add(new Fuel(vector2));
                     break;
             }
+        }
+
+        public void generateEnemies() {
+            List<Vector2> tempPlaces = this.spawnPlaces;
+            if (!generatedEnemies) {
+                for (int x = 0; x < random.Next(1, this.maxEnemies); x++) {
+                    if (tempPlaces.Count() > 0) {
+                        Vector2 randomPlace = tempPlaces.ElementAt(random.Next(0, tempPlaces.Count()));
+                        tempPlaces.Remove(randomPlace);
+                        this.generateMapObject(randomPlace);
+                    }
+                }
+            }
+            generatedEnemies = true;
         }
 
         public virtual void setupBoundingBox() {

@@ -11,7 +11,7 @@ namespace RiverRaider.Class.Tiles {
 
         public UpShrinkedMidObstacleTile(Vector2 position) : base(position) {
             
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y + texture.Height / 2 - 50));
+            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y + texture.Height / 2 - 100));
             spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 8 + 20, this.pos.Y + texture.Height - texture.Height / 8));
             spawnPlaces.Add(new Vector2(this.pos.X +texture.Width - texture.Width / 8, this.pos.Y + texture.Height - texture.Height / 8));
 

@@ -10,12 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RiverRaider.Class.userInterface {
-    class UI {
+    public class UI {
         Texture2D uiBackgroundTexture { get; set; }
         Texture2D fuelBarTexture { get; set; }
         Vector2 fuelBarPosition;
         Vector2 fuelPointerPosition;
         SpriteFont scoreFont { get; set; }
+        public static Button leftArrow;
+        public static Button rightArrow;
+
 
         public UI(ContentManager theContent ) {
             uiBackgroundTexture = Game1.textureManager.uiBackground;
@@ -23,6 +26,9 @@ namespace RiverRaider.Class.userInterface {
 
             fuelBarPosition = new Vector2(Game1.WIDTH / 2 - fuelBarTexture.Width / 2, Game1.HEIGHT - uiBackgroundTexture.Height / 1.5f);
             fuelPointerPosition = new Vector2(fuelBarPosition.X + 18, fuelBarPosition.Y + 12);
+
+            leftArrow = new Button("LeftArrow", new Vector2(0,Game1.HEIGHT - Game1.textureManager.left_arrow_btn.Height), Game1.textureManager.left_arrow_btn);
+            rightArrow = new Button("RightArrow", new Vector2(leftArrow.pos.X + leftArrow.texture.Width,leftArrow.pos.Y), Game1.textureManager.right_arrow_btn);
         }
 
         public void updateUI(GameTime theTime) {
@@ -34,8 +40,8 @@ namespace RiverRaider.Class.userInterface {
             drawFuelPointer(theBatch);
             theBatch.Draw(fuelBarTexture, fuelBarPosition, Color.White);
             
-            theBatch.Draw(Game1.textureManager.left_arrow_btn, new Rectangle((int)Game1.WIDTH / 8, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width, Game1.textureManager.left_arrow_btn.Height), null, Color.White, 0.0f, new Vector2(0.1f, 0.1f), SpriteEffects.None, 0.0f);
-            theBatch.Draw(Game1.textureManager.right_arrow_btn, new Rectangle((int)Game1.WIDTH / 8 * 2, (int)Game1.HEIGHT / 8, Game1.textureManager.left_arrow_btn.Width, Game1.textureManager.left_arrow_btn.Height), null, Color.White, 0.0f, new Vector2(0.1f, 0.1f), SpriteEffects.None, 0.0f);
+            leftArrow.drawButton(theBatch);
+            rightArrow.drawButton(theBatch);
         }
 
         private void drawFuelPointer(SpriteBatch theBatch) {
@@ -48,6 +54,25 @@ namespace RiverRaider.Class.userInterface {
 
         private float map(float n, float start1, float stop1, float start2, float stop2) {
             return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
+        }
+
+        public class Button {
+            public String label;
+            public Vector2 pos;
+            public Texture2D texture;
+            public Rectangle btnRectangle;
+
+            public Button(String label, Vector2 pos, Texture2D texture) {
+                this.label = label;
+                this.pos = pos;
+                this.texture = texture;
+                this.btnRectangle = new Rectangle((int)this.pos.X, (int)this.pos.Y, this.texture.Width, this.texture.Height);
+            }
+
+            public void drawButton(SpriteBatch theBatch) {
+                theBatch.Draw(this.texture, new Rectangle((int)this.pos.X, (int)this.pos.Y, this.texture.Width, this.texture.Height), null, Color.White, 0.0f, new Vector2(0.1f, 0.1f), SpriteEffects.None, 0.0f);
+            }
+            
         }
 
     }

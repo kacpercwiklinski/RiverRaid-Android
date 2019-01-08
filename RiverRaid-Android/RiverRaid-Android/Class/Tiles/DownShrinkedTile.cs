@@ -14,8 +14,8 @@ namespace RiverRaider.Class.Tiles {
 
         public DownShrinkedTile(Vector2 position) : base(position) {
             
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2 - texture.Width/4, this.pos.Y + texture.Height / 2 -texture.Height/4));
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y + texture.Height / 2));
+            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y / 2 - 150));
+            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y / 2));
 
             
             texture = Game1.textureManager.downShrinked;
