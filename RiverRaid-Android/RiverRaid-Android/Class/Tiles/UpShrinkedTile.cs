@@ -8,18 +8,20 @@ using RiverRaid_Android;
 using Microsoft.Xna.Framework;
 
 namespace RiverRaider.Class.Tiles {
-
-
     class UpShrinkedTile : Tile {
         public UpShrinkedTile(Vector2 position) : base(position) {
-            
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y - texture.Height / 2));
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y - texture.Height + texture.Height/8));
-
             texture = Game1.textureManager.upShrinked;
             tileType = TileType.UpShrinked;
             base.setupBoundingBox();
             base.getColorData();
+        }
+
+        public override void calculateSpawnPlaces() {
+            spawnPlaces.Clear();
+            spawnPlaces.Add(new Vector2(this.pos.X + 306, this.pos.Y + 166));
+            spawnPlaces.Add(new Vector2(this.pos.X + 296, this.pos.Y + 295));
+            spawnPlaces.Add(new Vector2(this.pos.X + 551, this.pos.Y + 474));
+            base.calculateSpawnPlaces();
         }
     }
 }

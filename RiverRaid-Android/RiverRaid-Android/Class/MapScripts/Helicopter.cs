@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using RiverRaid_Android;
 using Microsoft.Xna.Framework;
-using System.Diagnostics;
 
 namespace RiverRaider.Class.MapScripts {
     class Helicopter : MapObject {

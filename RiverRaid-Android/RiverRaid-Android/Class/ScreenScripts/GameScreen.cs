@@ -20,46 +20,33 @@ namespace RiverRaider.Class.ScreenScripts {
         Player player;
         Map map;
         UI ui;
-        Texture2D debugCenterLine;
         ContentManager cm;
-        Fuel fuel;
-        
         
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent) {
             cm = theContent;
-            //Load the background texture for the screen
-            // mGameScreenBackground = theContent.Load<Texture2D>("textures/background/gameBackground");
             
             player = new Player("Player", Game1.textureManager.player, new Vector2(0,0));
             ui = new UI(theContent);
             map = new Map(theContent,mapTilesNumber);
-
-            //fuel = new Fuel(new Vector2(Game1.WIDTH / 2, Game1.HEIGHT / 2));
-            //Map.mapObjects.Add(fuel);
-
-
-
-            //debugCenterLine = Game1.textureManager.centerLine;
         }
 
         public override void Update(GameTime theTime) {
-            var kstate = Keyboard.GetState();
-
-            player.update(theTime);
+             // Update map
             map.updateMap(theTime);
+            // Update player logic
+            player.update(theTime);
+            // Update UI
             ui.updateUI(theTime);
+
             base.Update(theTime);
         }
 
         public override void Draw(SpriteBatch theBatch) {
-            //Draw Map
+            // Draw Map
             map.drawMap(theBatch);
 
             // Draw player texture
             player.drawPlayer(theBatch);
-
-            // Debug
-            //theBatch.Draw(debugCenterLine, new Vector2(Game1.WIDTH/2,0), Color.White);
 
             // Draw UI
             ui.drawUI(theBatch);
@@ -73,7 +60,6 @@ namespace RiverRaider.Class.ScreenScripts {
             Map.mapObjects = new List<MapObject>();
             ui = new UI(cm);
             map = new Map(cm, mapTilesNumber);
-
         }
     }
 }

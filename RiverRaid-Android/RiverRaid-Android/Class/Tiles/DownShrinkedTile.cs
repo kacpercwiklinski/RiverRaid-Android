@@ -9,32 +9,18 @@ using RiverRaider.Class.MapScripts;
 
 namespace RiverRaider.Class.Tiles {
     class DownShrinkedTile : Tile {
-        
-        public static List<MapObject> mapObjects = new List<MapObject>();
-
         public DownShrinkedTile(Vector2 position) : base(position) {
-            
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y / 2 - 150));
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2, this.pos.Y / 2));
-
-            
             texture = Game1.textureManager.downShrinked;
             tileType = TileType.DownShrinked;
             base.setupBoundingBox();
             base.getColorData();
-
         }
 
-       
-
-
-
-
-
-
-
-
-
-
+       public override void calculateSpawnPlaces() {
+            spawnPlaces.Clear();
+            spawnPlaces.Add(new Vector2(this.pos.X + 106, this.pos.Y + 73));
+            spawnPlaces.Add(new Vector2(this.pos.X + 297, this.pos.Y + 215));
+            spawnPlaces.Add(new Vector2(this.pos.X + 301, this.pos.Y + 371));
+       }
     }
 }

@@ -15,7 +15,7 @@ namespace RiverRaider.Class.MapScripts {
     class Map {
         Random r;
         public const float maxMovingSpeed = 500f, minMovingSpeed = 100f;
-        Tile firstTile, currentTile;
+        Tile firstTile, currentTile, secondTile;
         public static List<Tile> tiles;
 
         public static List<MapObject> mapObjects = new List<MapObject>();
@@ -26,23 +26,25 @@ namespace RiverRaider.Class.MapScripts {
             mapMovingSpeed = 100f;
             tiles = new List<Tile>();
             firstTile = new FullTile(new Vector2(Game1.WIDTH / 4, 0));
+            secondTile = new UpShrinkedTile(new Vector2(Game1.WIDTH / 4, -firstTile.texture.Height));
             tiles.Add(firstTile);
+            tiles.Add(secondTile);
 
-            currentTile = firstTile;
+            currentTile = secondTile;
             generateMap(tilesNumber);
 
-            currentTile.generateEnemies();
+         //   firstTile.generateEnemies();
+          //  secondTile.generateEnemies();
         }
 
         private void generateMap(int tilesNumber) {
             Tile nextTile = new FullTile(new Vector2(Game1.WIDTH / 4, 0));
 
-            for (int i = 1; i <= tilesNumber; i++) {
+            for (int i = 2; i <= tilesNumber; i++) {
                 if (currentTile.tileType == TileType.FullTile) {
                     int random = r.Next(0, 2);
                     if (random == 0) {
                         nextTile = new UpShrinkedTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked.Height - 1));
-                        
                     } else if (random == 1) {
                         nextTile = new UpShrinkedMidObstacleTile(new Vector2(Game1.WIDTH / 4, 0 - i * Game1.textureManager.upShrinked_mid_obstacle.Height - 1));
                     }
@@ -79,10 +81,6 @@ namespace RiverRaider.Class.MapScripts {
         }
 
         public void updateMap(GameTime theTime) {
-
-            // Generate currentTiles enemies
-            tiles.FindAll((tile) => tile.pos.Y >= -tile.texture.Height - 30).ForEach((tile) => tile.generateEnemies());
-
             // Remove bullets above the screen
             removeHiddenBullets();
 
@@ -102,6 +100,9 @@ namespace RiverRaider.Class.MapScripts {
                 tile.updateBoundingBox();
             });
 
+            // Generate currentTiles enemies
+            tiles.FindAll((tile) => tile.pos.Y >= -tile.texture.Height).ForEach((tile) => tile.generateEnemies());
+
             mapObjects = mapObjects.FindAll((mapObject) => mapObject.onScreen);//.FindAll((mapObject)  => mapObject.isTriggerable);
 
             tiles = tiles.FindAll((tile) => tile.onScreen);
@@ -118,7 +119,7 @@ namespace RiverRaider.Class.MapScripts {
         }
 
         private void removeHiddenBullets() {
-            Player.bullets = Player.bullets.FindAll((bullet) => bullet.pos.Y > -50);
+            Player.bullets = Player.bullets.FindAll((bullet) => bullet.pos.Y > -bullet.texture.Height);
         }
     }
 }

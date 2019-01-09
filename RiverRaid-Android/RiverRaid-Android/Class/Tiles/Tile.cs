@@ -22,20 +22,22 @@ namespace RiverRaider.Class.Tiles {
         public TileType tileType;
         public Color[] colorData;
         public List<Vector2> spawnPlaces;
-        public bool generatedEnemies = false;
+        public bool generatedEnemies;
 
         public Tile(Texture2D texture,Vector2 position, TileType tileType) {
             pos = position;
             this.texture = texture;
             this.tileType = tileType;
-            spawnPlaces = new List<Vector2>();
+            generatedEnemies = false;
+            this.spawnPlaces = new List<Vector2>();
         }
 
         public Tile(Vector2 position) {
             pos = position;
             this.texture = Game1.textureManager.fullTile;
             this.tileType = TileType.FullTile;
-            spawnPlaces = new List<Vector2>();
+            generatedEnemies = false;
+            this.spawnPlaces = new List<Vector2>();
         }
 
         public void generateMapObject(Vector2 vector2)
@@ -58,15 +60,20 @@ namespace RiverRaider.Class.Tiles {
         public void generateEnemies() {
             List<Vector2> tempPlaces = this.spawnPlaces;
             if (!generatedEnemies) {
+                this.calculateSpawnPlaces();
                 for (int x = 0; x < this.maxEnemies; x++) {
                     if (tempPlaces.Count() > 0) {
                         Vector2 randomPlace = tempPlaces.ElementAt(random.Next(0, tempPlaces.Count()));
                         tempPlaces.Remove(randomPlace);
-                        this.generateMapObject(randomPlace);
+                        generateMapObject(randomPlace);
                     }
                 }
             }
             generatedEnemies = true;
+        }
+
+        public virtual void calculateSpawnPlaces() {
+
         }
 
         public virtual void setupBoundingBox() {

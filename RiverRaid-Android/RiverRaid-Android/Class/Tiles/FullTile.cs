@@ -10,15 +10,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RiverRaider.Class.Tiles {
     class FullTile : Tile {
-
         public FullTile(Vector2 position) : base(position) {
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width/2 , this.pos.Y + texture.Height/2));
-            spawnPlaces.Add(new Vector2(this.pos.X + texture.Width / 2 - texture.Width/4, this.pos.Y + texture.Height / 2 - texture.Width/4));
-
             this.texture = Game1.textureManager.fullTile;
             tileType = TileType.FullTile;
             base.setupBoundingBox();
             base.getColorData();
+        }
+
+        public override void calculateSpawnPlaces() {
+            spawnPlaces.Clear();
+            spawnPlaces.Add(new Vector2(this.pos.X + 112, this.pos.Y + 98));
+            spawnPlaces.Add(new Vector2(this.pos.X + 298, this.pos.Y + 263));
+            spawnPlaces.Add(new Vector2(this.pos.X + 454, this.pos.Y + 424));
+            base.calculateSpawnPlaces();
         }
     }
 }

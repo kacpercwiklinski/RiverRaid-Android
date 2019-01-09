@@ -77,7 +77,6 @@ namespace RiverRaider.Class.MapScripts {
                     bool collision = false;
                     if(currentTile.tileType != TileType.FullTile) {
                         collision = PerPixelCollisionManager.IntersectsPixel(boundingBox, this.colorData, currentTile.boundingBox, currentTile.colorData);
-
                     }
                     if (this.pos.X <= currentTile.pos.X) collision = true;
                     if (this.pos.X + this.texture.Width >= currentTile.pos.X + currentTile.texture.Width) collision = true;
@@ -107,7 +106,7 @@ namespace RiverRaider.Class.MapScripts {
 
         public void draw(SpriteBatch theBatch) {
             if (this.onScreen) {
-                if(this.label.Equals("Ship")) {
+                if(this.label.Equals("Ship") || this.label.Equals("Plane")) {
                     if(this.direction == 1) {
                         s = SpriteEffects.FlipHorizontally;
                     } else {
@@ -115,12 +114,6 @@ namespace RiverRaider.Class.MapScripts {
                     }
                 }else if (this.label.Equals("Helicopter")) {
                     if (this.direction == -1) {
-                        s = SpriteEffects.FlipHorizontally;
-                    } else {
-                        s = SpriteEffects.None;
-                    }
-                } else if (this.label.Equals("Plane")) {
-                    if (this.direction == 1) {
                         s = SpriteEffects.FlipHorizontally;
                     } else {
                         s = SpriteEffects.None;
