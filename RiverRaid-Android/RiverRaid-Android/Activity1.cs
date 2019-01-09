@@ -11,7 +11,7 @@ namespace RiverRaid_Android {
         , AlwaysRetainTaskState = true
         , LaunchMode = Android.Content.PM.LaunchMode.SingleInstance
         , ScreenOrientation = ScreenOrientation.Landscape
-        , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Touchscreen | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout)]
+        , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
     public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity {
         protected override void OnCreate(Bundle bundle) {
             base.OnCreate(bundle);

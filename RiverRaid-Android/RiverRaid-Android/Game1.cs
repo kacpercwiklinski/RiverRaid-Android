@@ -20,6 +20,8 @@ namespace RiverRaid_Android {
 
         public static float scaleX;
         public static float scaleY;
+        public static Matrix scaleMatrix;
+        public static Viewport viewport;
 
         RenderTarget2D renderTarget;
 
@@ -42,12 +44,9 @@ namespace RiverRaid_Android {
             graphics.IsFullScreen = false; // true
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-            graphics.ApplyChanges();
-           // graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
-
             
-            TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
-            TouchPanel.EnableMouseTouchPoint = true;
+            graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
+            
         }
 
         /// <summary>
@@ -65,11 +64,16 @@ namespace RiverRaid_Android {
 
             dst = calculateAspectRectangle();
 
-            scaleX = GraphicsDevice.Viewport.Width / WIDTH;
-            scaleY = GraphicsDevice.Viewport.Height / HEIGHT;
+            scaleX = (float)GraphicsDevice.Viewport.Width / WIDTH;
+            scaleY = (float)GraphicsDevice.Viewport.Height / HEIGHT;
+            scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
-            TouchPanel.DisplayHeight = HEIGHT;
-            TouchPanel.DisplayWidth = WIDTH;
+            viewport = GraphicsDevice.Viewport;
+
+            
+
+            TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
+
 
             base.Initialize();
         }
@@ -102,6 +106,7 @@ namespace RiverRaid_Android {
             }
             base.Dispose(disposing);
         }
+        
 
         private void GameScreenEvent(object sender, EventArgs e) {
 

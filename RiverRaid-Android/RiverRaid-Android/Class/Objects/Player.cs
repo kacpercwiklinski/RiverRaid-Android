@@ -148,15 +148,17 @@ namespace RiverRaider.Class.Objects {
         private void checkTouchButtons(TouchCollection touchCollection, GameTime theTime) {
             if (touchCollection.Count > 0) {
                 foreach (var touch in touchCollection) {
-                    //TouchLocation tempLocation = new TouchLocation(touch.Id, touch.State, new Vector2(touch.Position.X / Game1.scaleX, touch.Position.Y / Game1.scaleY));
 
-                    if (UI.leftArrow.btnRectangle.Contains(touch.Position) && this.pos.X > Game1.WIDTH / 4 + 8 + this.texture.Width / 2) {
+                    Matrix tempMatrix = Matrix.Invert(Game1.scaleMatrix);
+                    TouchLocation tempLocation = new TouchLocation(touch.Id, touch.State, Vector2.Transform(new Vector2(touch.Position.X + Game1.viewport.X, touch.Position.Y + Game1.viewport.Y), tempMatrix));
+
+                    if (UI.leftArrow.btnRectangle.Contains(tempLocation.Position) && this.pos.X > Game1.WIDTH / 4 + 8 + this.texture.Width / 2) {
                         this.texture = Game1.textureManager.player_left;
                         this.pos.X += -1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
-                    } else if (UI.rightArrow.btnRectangle.Contains(touch.Position) && this.pos.X < Game1.WIDTH - Game1.WIDTH / 4 - 8 - this.texture.Width / 2) {
+                    } else if (UI.rightArrow.btnRectangle.Contains(tempLocation.Position) && this.pos.X < Game1.WIDTH - Game1.WIDTH / 4 - 8 - this.texture.Width / 2) {
                         this.texture = Game1.textureManager.player_right;
                         this.pos.X += 1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
-                    } else if (new Rectangle(Game1.WIDTH / 2, 0, Game1.WIDTH / 2, Game1.HEIGHT).Contains(touch.Position) && touch.State == TouchLocationState.Pressed) {
+                    } else if (new Rectangle(Game1.WIDTH / 2, 0, Game1.WIDTH / 2, Game1.HEIGHT).Contains(tempLocation.Position) && touch.State == TouchLocationState.Pressed) {
                         shoot();
                         this.shootCooldown = 0.2f;
                     } 
