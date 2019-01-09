@@ -20,7 +20,7 @@ namespace RiverRaider.Class.MapScripts {
         public float disappearTime = 1f;
         public Boolean isHit = false;
         public float speed = 120f;
-        int direction = 1;
+        public int direction = 1;
         public Color[] colorData;
         SpriteEffects s = SpriteEffects.None;
         private bool hit = true;
@@ -48,16 +48,15 @@ namespace RiverRaider.Class.MapScripts {
         public virtual void updateObject(GameTime theTime) {
             updateObjectPos(theTime);
 
-            checkCollisions();
+            if(!this.label.Equals("Plane") && !this.label.Equals("Explosion")) checkCollisions();
 
             updateBoundingBox(theTime);
-
-
             
             if (isHit) {
                 disappearTime -= (float)theTime.ElapsedGameTime.TotalSeconds;
                 if (hit) {
                     changeTexture();
+                    this.getColorData();
                     //Game1.audioManager.boom.Play();
                     this.isTriggerable = false;
                     this.label = "Explosion";
@@ -95,7 +94,7 @@ namespace RiverRaider.Class.MapScripts {
         }
 
         private void updateObjectPos(GameTime theTime) {
-            if (!this.label.Equals("Fuel") && !this.label.Equals("Explosion")) {
+            if (!this.label.Equals("Fuel") && !this.label.Equals("Explosion") && !this.label.Equals("Plane")) {
                 this.pos.X += this.direction * this.speed * (float)theTime.ElapsedGameTime.TotalSeconds;
             }
         }

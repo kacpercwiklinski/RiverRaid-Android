@@ -92,13 +92,7 @@ namespace RiverRaider.Class.MapScripts {
             });
 
             // Move and remove tiles below screen
-            tiles.ForEach((tile) => {
-                if (tile.pos.Y > Game1.HEIGHT) tile.onScreen = false;
-
-                tile.pos.Y += mapMovingSpeed * (float)theTime.ElapsedGameTime.TotalSeconds;
-
-                tile.updateBoundingBox();
-            });
+            tiles.ForEach((tile) => tile.update(theTime));
 
             // Generate currentTiles enemies
             tiles.FindAll((tile) => tile.pos.Y >= -tile.texture.Height).ForEach((tile) => tile.generateEnemies());
@@ -112,7 +106,6 @@ namespace RiverRaider.Class.MapScripts {
             tiles.FindAll((tile) => tile.pos.Y > -Game1.textureManager.fullTile.Height -20).ForEach((tile)  => {
                 tile.drawTile(theBatch);
             });
-
             mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).FindAll((mapObject)=> mapObject.onScreen).ForEach((mapObject) => {
                 mapObject.draw(theBatch);
             });
