@@ -102,9 +102,7 @@ namespace RiverRaider.Class.MapScripts {
                 tile.updateBoundingBox();
             });
 
-
-
-            mapObjects = mapObjects.FindAll((mapObject) => mapObject.onScreen);//.FindAll((mapObject) => mapObject.isTriggerable);
+            mapObjects = mapObjects.FindAll((mapObject) => mapObject.onScreen);//.FindAll((mapObject)  => mapObject.isTriggerable);
 
             tiles = tiles.FindAll((tile) => tile.onScreen);
         }
@@ -114,7 +112,7 @@ namespace RiverRaider.Class.MapScripts {
                 tile.drawTile(theBatch);
             });
 
-            mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).ForEach((mapObject) => {
+            mapObjects.FindAll((mapObject) => mapObject.pos.Y > -Game1.textureManager.fullTile.Height - 20).FindAll((mapObject)=> mapObject.onScreen).ForEach((mapObject) => {
                 mapObject.draw(theBatch);
             });
         }

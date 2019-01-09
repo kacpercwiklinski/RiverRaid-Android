@@ -51,14 +51,18 @@ namespace RiverRaider.Class.MapScripts {
             checkCollisions();
 
             updateBoundingBox(theTime);
+
+
             
-            if (isHit && hit) {
-                changeTexture();
-                //Game1.audioManager.boom.Play();
-                this.isTriggerable = false;
-                this.label = "Explosion";
+            if (isHit) {
                 disappearTime -= (float)theTime.ElapsedGameTime.TotalSeconds;
-                hit = false;
+                if (hit) {
+                    changeTexture();
+                    //Game1.audioManager.boom.Play();
+                    this.isTriggerable = false;
+                    this.label = "Explosion";
+                    hit = false;
+                }
             }
             if(disappearTime <= 0f) {
                 this.onScreen = false;

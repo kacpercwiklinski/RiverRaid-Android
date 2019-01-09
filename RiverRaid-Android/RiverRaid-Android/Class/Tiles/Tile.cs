@@ -58,7 +58,7 @@ namespace RiverRaider.Class.Tiles {
         public void generateEnemies() {
             List<Vector2> tempPlaces = this.spawnPlaces;
             if (!generatedEnemies) {
-                for (int x = 0; x < random.Next(1, this.maxEnemies); x++) {
+                for (int x = 0; x < this.maxEnemies; x++) {
                     if (tempPlaces.Count() > 0) {
                         Vector2 randomPlace = tempPlaces.ElementAt(random.Next(0, tempPlaces.Count()));
                         tempPlaces.Remove(randomPlace);
