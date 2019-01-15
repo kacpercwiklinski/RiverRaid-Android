@@ -21,11 +21,16 @@ namespace RiverRaider.Class.ScreenScripts {
         Map map;
         UI ui;
         ContentManager cm;
-        
+
+        public static int score = 0;
+        private SpriteFont scoreFont;
+
+
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent) {
             cm = theContent;
             
             player = new Player("Player", Game1.textureManager.player, new Vector2(0,0));
+            scoreFont = theContent.Load<SpriteFont>("font/scoreFont");
             ui = new UI(theContent);
             map = new Map(theContent,mapTilesNumber);
         }
@@ -50,7 +55,10 @@ namespace RiverRaider.Class.ScreenScripts {
 
             // Draw UI
             ui.drawUI(theBatch);
-            
+
+            // Draw player score on screen
+            theBatch.DrawString(scoreFont, ""+score, new Vector2(630, 545), Color.Yellow);
+
             base.Draw(theBatch);
         }
         

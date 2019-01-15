@@ -25,7 +25,7 @@ namespace RiverRaider.Class.Tiles {
         public Color[] colorData;
         public List<Vector2> spawnPlaces;
         public bool generatedEnemies;
-        private float planeSpawnChance = 0.33f;
+        private float planeSpawnChance = 0.03f;
 
         public Tile(Texture2D texture,Vector2 position, TileType tileType) {
             pos = position;

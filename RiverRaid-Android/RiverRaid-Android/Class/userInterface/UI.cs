@@ -18,6 +18,8 @@ namespace RiverRaider.Class.userInterface {
         SpriteFont scoreFont { get; set; }
         public static Button leftArrow;
         public static Button rightArrow;
+        public static Button upArrow;
+        public static Button downArrow;
 
 
         public UI(ContentManager theContent ) {
@@ -27,8 +29,10 @@ namespace RiverRaider.Class.userInterface {
             fuelBarPosition = new Vector2(Game1.WIDTH / 2 - fuelBarTexture.Width / 2, Game1.HEIGHT - uiBackgroundTexture.Height / 1.5f);
             fuelPointerPosition = new Vector2(fuelBarPosition.X + 18, fuelBarPosition.Y + 12);
 
-            leftArrow = new Button("LeftArrow", new Vector2(0,Game1.HEIGHT - Game1.textureManager.left_arrow_btn.Height), Game1.textureManager.left_arrow_btn);
-            rightArrow = new Button("RightArrow", new Vector2(leftArrow.pos.X + leftArrow.texture.Width,leftArrow.pos.Y), Game1.textureManager.right_arrow_btn);
+            leftArrow = new Button("LeftArrow", new Vector2(50,Game1.HEIGHT - Game1.textureManager.left_arrow_btn.Height - 100), Game1.textureManager.left_arrow_btn);         
+            rightArrow = new Button("RightArrow", new Vector2(leftArrow.pos.X + leftArrow.texture.Width + 50,leftArrow.pos.Y), Game1.textureManager.right_arrow_btn);
+            upArrow = new Button("upArrow", new Vector2(leftArrow.pos.X + 100, leftArrow.pos.Y - 100), Game1.textureManager.up_arrow_btn);
+            downArrow = new Button("downArrow", new Vector2(leftArrow.pos.X + 100, leftArrow.pos.Y + 100), Game1.textureManager.down_arrow_btn);
         }
 
         public void updateUI(GameTime theTime) {
@@ -42,6 +46,8 @@ namespace RiverRaider.Class.userInterface {
             
             leftArrow.drawButton(theBatch);
             rightArrow.drawButton(theBatch);
+            upArrow.drawButton(theBatch);
+            downArrow.drawButton(theBatch);
         }
 
         private void drawFuelPointer(SpriteBatch theBatch) {
@@ -70,7 +76,7 @@ namespace RiverRaider.Class.userInterface {
             }
 
             public void drawButton(SpriteBatch theBatch) {
-                theBatch.Draw(this.texture, new Rectangle((int)this.pos.X, (int)this.pos.Y, this.texture.Width, this.texture.Height), null, Color.White, 0.0f, new Vector2(0.1f, 0.1f), SpriteEffects.None, 0.0f);
+                theBatch.Draw(this.texture, new Rectangle((int)this.pos.X, (int)this.pos.Y, this.texture.Width, this.texture.Height), null, Color.White, 0.0f, new Vector2(0.05f, 0.05f), SpriteEffects.None, 0.0f);
             }
             
         }

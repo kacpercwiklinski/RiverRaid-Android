@@ -57,7 +57,28 @@ namespace RiverRaider.Class.MapScripts {
                 if (hit) {
                     changeTexture();
                     this.getColorData();
-                    //Game1.audioManager.boom.Play();
+                    Game1.audioManager.boom.Play(0.5f, -1.0f, 0.0f);
+
+                    if (label == "Ship")
+                    {
+                        ScreenScripts.GameScreen.score += 30;
+                    }
+
+                    if (label == "Helicopter")
+                    {
+                        ScreenScripts.GameScreen.score += 60;
+                    }
+
+                    if (label == "Fuel")
+                    {
+                        ScreenScripts.GameScreen.score += 80;
+                    }
+
+                    if (label == "Plane")
+                    {
+                        ScreenScripts.GameScreen.score += 100;
+                    }
+
                     this.isTriggerable = false;
                     this.label = "Explosion";
                     hit = false;

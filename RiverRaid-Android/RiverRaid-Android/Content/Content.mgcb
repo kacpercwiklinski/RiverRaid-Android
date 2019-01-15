@@ -15,19 +15,19 @@
 
 #begin audio/boom.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audio/boom.mp3
 
 #begin audio/fuel.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audio/fuel.mp3
 
 #begin audio/shoot.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audio/shoot.mp3
 
@@ -37,6 +37,16 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:font/optionFont.spritefont
+
+#begin font/sc.ttf
+/copy:font/sc.ttf
+
+#begin font/scoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font/scoreFont.spritefont
 
 #begin textures/background/splashScreenBackground.png
 /importer:TextureImporter
@@ -254,6 +264,18 @@
 /processorParam:TextureFormat=Color
 /build:textures/tiles/upShrinked_mid_obstacle.png
 
+#begin textures/ui/down_arrow_btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/ui/down_arrow_btn.png
+
 #begin textures/ui/fuelBar.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -313,4 +335,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:textures/ui/uiBackground.png
+
+#begin textures/ui/up_arrow_btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/ui/up_arrow_btn.png
 

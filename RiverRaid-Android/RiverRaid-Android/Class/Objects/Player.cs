@@ -12,6 +12,7 @@ using RiverRaider.Class.MapScripts;
 using RiverRaider.Class.Tiles;
 using Microsoft.Xna.Framework.Input.Touch;
 using RiverRaider.Class.userInterface;
+using RiverRaider.Class.ScreenScripts;
 
 namespace RiverRaider.Class.Objects {
     class Player : GameObject {
@@ -68,7 +69,9 @@ namespace RiverRaider.Class.Objects {
 
             if (fueling && fuel < 100f) {
                 fuel += 10f * (float)theTime.ElapsedGameTime.TotalSeconds;
-                if(fuel > 100f) {
+                Game1.audioManager.fuel.Play(0.7f, -1.0f, 0.0f);
+
+                if (fuel > 100f) {
                     fuel = 100f;
                 }
             }
@@ -158,7 +161,16 @@ namespace RiverRaider.Class.Objects {
                     } else if (UI.rightArrow.btnRectangle.Contains(tempLocation.Position) && this.pos.X < Game1.WIDTH - Game1.WIDTH / 4 - 8 - this.texture.Width / 2) {
                         this.texture = Game1.textureManager.player_right;
                         this.pos.X += 1 * speed * (float)theTime.ElapsedGameTime.TotalSeconds;
-                    } else if (new Rectangle(Game1.WIDTH / 2, 0, Game1.WIDTH / 2, Game1.HEIGHT).Contains(tempLocation.Position) && touch.State == TouchLocationState.Pressed) {
+                    }
+                    else if (UI.upArrow.btnRectangle.Contains(tempLocation.Position) && Map.mapMovingSpeed <= Map.maxMovingSpeed)
+                    {
+                        Map.mapMovingSpeed += acceleration * (float)theTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    else if (UI.downArrow.btnRectangle.Contains(tempLocation.Position) && Map.mapMovingSpeed >= Map.minMovingSpeed)
+                    {
+                        Map.mapMovingSpeed -= acceleration * (float)theTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    else if (new Rectangle(Game1.WIDTH / 2, 0, Game1.WIDTH / 2, Game1.HEIGHT).Contains(tempLocation.Position) && touch.State == TouchLocationState.Pressed) {
                         shoot();
                         this.shootCooldown = 0.2f;
                     } 
@@ -176,7 +188,7 @@ namespace RiverRaider.Class.Objects {
 
         private void shoot() {
             bullets.Add(new Bullet("Bullet",Game1.textureManager.bullet,this.pos));
-            //Game1.audioManager.shoot.Play();
+            Game1.audioManager.shoot.Play(0.2f, -1.0f, 0.0f);
         }
 
         public void drawPlayer(SpriteBatch theBatch) {
@@ -190,6 +202,7 @@ namespace RiverRaider.Class.Objects {
         }
 
         private void explode() {
+            GameScreen.score = 0;
             Game1.mGameScreen.StartGame();
         }
     }

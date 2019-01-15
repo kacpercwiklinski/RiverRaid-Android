@@ -44,6 +44,8 @@ namespace RiverRaider.Class.Objects {
         public Texture2D fuelPointer;
         public Texture2D left_arrow_btn;
         public Texture2D right_arrow_btn;
+        public Texture2D up_arrow_btn;
+        public Texture2D down_arrow_btn;
 
         public TextureManager(ContentManager theContent) {
             loadTextures(theContent);
@@ -84,6 +86,8 @@ namespace RiverRaider.Class.Objects {
             fuelPointer = theContent.Load<Texture2D>("textures/ui/fuelPointer");
             left_arrow_btn = theContent.Load<Texture2D>("textures/ui/left_arrow_btn");
             right_arrow_btn = theContent.Load<Texture2D>("textures/ui/right_arrow_btn");
+            up_arrow_btn = theContent.Load<Texture2D>("textures/ui/up_arrow_btn");
+            down_arrow_btn = theContent.Load<Texture2D>("textures/ui/down_arrow_btn");
         }
 
     }
